@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/activity_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.keybord.keyborddemo.MainActivity">
+    <com.example.keybord.keyborddemo.MyKeyboard
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/et1"
+        custom:xml ="@xml/keyboard_numbers"
+        custom:space="true"
+        android:hint="弹出自定义键盘"
+        />
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/et2"
+        android:layout_gravity="center"
+        android:hint="弹出系统键盘"
+        />
+    <com.example.keybord.keyborddemo.MyKeyboard
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/et3"
+        custom:xml ="@xml/keyboard_numbers"
+        custom:space="true"
+        android:layout_gravity="bottom"
+        android:hint="弹出自定义键盘,布局顶起"
+        />
+</FrameLayout>

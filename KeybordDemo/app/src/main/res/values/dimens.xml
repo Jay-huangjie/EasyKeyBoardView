@@ -1,0 +1,12 @@
+<resources>
+
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+
+    <dimen name="keyboard_height">230dip</dimen>
+    <dimen name="key_height">60dp</dimen>   <!--这里是代表一行的高度。-->
+    <dimen name="keyboard_horizontalGap">1px</dimen>
+    <dimen name="keyboard_verticalGap">1px</dimen>
+    <dimen name="key_height_double">120dp</dimen>  <!--大小是key_height的两倍-->
+</resources>
