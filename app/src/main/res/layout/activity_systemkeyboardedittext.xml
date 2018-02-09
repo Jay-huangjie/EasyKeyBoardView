@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:keyboard="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/activity_main"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <com.jay.easykeyboard.SystemKeyBoardEditText
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        keyboard:xmlLayoutResId="@xml/keyboard_numbers"
+        android:id="@+id/skb_top"
+        android:hint="顶部EditText"
+        android:layout_margin="10dp"
+        android:background="@drawable/edit_bg"
+        />
+    <com.jay.easykeyboard.SystemKeyBoardEditText
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_margin="10dp"
+        android:layout_alignParentBottom="true"
+        android:hint="底部EditText"
+        android:id="@+id/skb_bottom"
+        keyboard:space="true"
+        keyboard:xmlLayoutResId="@xml/keyboard_numbers"
+        android:background="@drawable/edit_bg"
+        />
+</RelativeLayout>

@@ -2,8 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/KeybordDemo.iml" filepath="$PROJECT_DIR$/KeybordDemo.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/KeyBoardView.iml" filepath="$PROJECT_DIR$/.idea/KeyBoardView.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/easykeyboard/easykeyboard.iml" filepath="$PROJECT_DIR$/easykeyboard/easykeyboard.iml" />
     </modules>
   </component>
 </project>

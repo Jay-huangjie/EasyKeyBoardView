@@ -8,9 +8,4 @@
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
     </style>
-
-<style name="AnimationFade">
-    <item name="android:windowEnterAnimation">@anim/dialog_enter</item>
-    <item name="android:windowExitAnimation">@anim/dialog_exit</item>
-</style>
 </resources>

@@ -1,4 +1,4 @@
-package com.example.keybord.keyborddemo;
+package com.jay.easykeyboard.keyboard;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -10,12 +10,16 @@ import android.inputmethodservice.Keyboard.Key;
 import android.inputmethodservice.KeyboardView;
 import android.util.AttributeSet;
 
+import com.jay.easykeyboard.R;
+
 import java.util.List;
+
 
 public class MyKeyboardView extends KeyboardView {
 
     private Drawable mKeybgDrawable;
-    private Resources res;
+    private Rect rect;
+    private Paint paint;
 
     public MyKeyboardView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -28,8 +32,28 @@ public class MyKeyboardView extends KeyboardView {
     }
 
     private void initResources(Context context) {
-        res = context.getResources();
+       Resources res = context.getResources();
         mKeybgDrawable = res.getDrawable(R.drawable.btn_keyboard_key);
+        rect = new Rect();
+        paint = new Paint();
+        paint.setAntiAlias(true);
+        paint.setTextAlign(Paint.Align.CENTER);
+        paint.setTextSize(50);
+        paint.setColor(res.getColor(android.R.color.black));
+    }
+
+    public void setKeybgDrawable(Drawable mKeybgDrawable){
+        this.mKeybgDrawable = mKeybgDrawable;
+        invalidate();
+    }
+
+    public Paint getPaint(){
+        return paint;
+    }
+
+    public void setPaint(Paint paint){
+        this.paint = paint;
+        invalidate();
     }
 
     @Override
@@ -43,21 +67,15 @@ public class MyKeyboardView extends KeyboardView {
                 offsety = 1;
             }
             int initdrawy = key.y + offsety;
-
-            Rect rect = new Rect(key.x, initdrawy, key.x + key.width, key.y
-                    + key.height);
-
+            rect.left = key.x;
+            rect.top = initdrawy;
+            rect.right = key.x+key.width;
+            rect.bottom = key.y+key.height;
             canvas.clipRect(rect);
             int[] state = key.getCurrentDrawableState();
             mKeybgDrawable.setState(state);
             mKeybgDrawable.setBounds(rect);
             mKeybgDrawable.draw(canvas);
-            Paint paint = new Paint();
-            paint.setAntiAlias(true);
-            paint.setTextAlign(Paint.Align.CENTER);
-            paint.setTextSize(50);
-            paint.setColor(res.getColor(R.color.black));
-
             if (key.label != null) {
                 canvas.drawText(
                         key.label.toString(),

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="xmlLayoutResId" format="reference"/>
+    <!--<attr name="randomkeys" format="boolean"/>-->
+    <attr name="keyViewbg" format="reference"/>
+    <declare-styleable name="SystemKeyboard">
+        <attr name="xmlLayoutResId"/>
+        <attr name="keyViewbg"/>
+    </declare-styleable>
+    <declare-styleable name="SystemKeyBoardEditText">
+        <attr name="xmlLayoutResId"/>
+        <attr name="keyViewbg"/>
+        <attr name="space" format="boolean"/>
+    </declare-styleable>
+</resources>

@@ -24,7 +24,7 @@
         <Key android:codes="55" android:keyLabel="7" />
         <Key android:codes="56" android:keyLabel="8" />
         <Key android:codes="57" android:keyLabel="9" />
-        <Key android:codes="-3" android:keyHeight="@dimen/key_height_double"
+        <Key android:codes="-4" android:keyHeight="@dimen/key_height_double"
              android:keyEdgeFlags="right" android:isRepeatable="true"
              android:keyLabel="完成" />
     </Row>
