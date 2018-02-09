@@ -9,12 +9,10 @@ import android.inputmethodservice.Keyboard;
 import android.inputmethodservice.KeyboardView;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 
-import com.jay.easykeyboard.constant.KeyboardConfig;
 import com.jay.easykeyboard.constant.Util;
 import com.jay.easykeyboard.function.SystemOnKeyboardActionListener;
 import com.jay.easykeyboard.keyboard.MyKeyboardView;
@@ -169,11 +167,5 @@ public class SystemKeyboard extends FrameLayout {
         keyboardView.setOnKeyboardActionListener(null);
         keyboardView = null;
         mKeyboard = null;
-    }
-
-    private void Log(String value) {
-        if (KeyboardConfig.openLog) {
-            Log.i(TAG, value);
-        }
     }
 }
