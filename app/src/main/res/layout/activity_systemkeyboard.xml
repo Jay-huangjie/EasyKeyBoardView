@@ -35,5 +35,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
+        keyboard:keyViewbg="@drawable/edit_bg"
         keyboard:xmlLayoutResId="@xml/keyboard_numbers" />
 </RelativeLayout>

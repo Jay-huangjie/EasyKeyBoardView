@@ -45,7 +45,7 @@ public class SystemKeyboardActivity extends AppCompatActivity implements View.On
                 }
             }
         };
-        listener.setEditText(edit1);
+        listener.setEditText(edit1); //用于绑定EditText,如果切换了EditText，请务必设置此方法
         mKeyboard.setOnKeyboardActionListener(listener);
 
         edit1.setOnFocusChangeListener(this);
@@ -56,7 +56,7 @@ public class SystemKeyboardActivity extends AppCompatActivity implements View.On
             public void onClick(View v) {
                 mKeyboard.setKeyboardUI(new SystemKeyboard.KeyUI() {
                     @Override
-                    public Paint paintConfig(Paint mPaint) {
+                    public Paint paintConfig(Paint mPaint) { //更新Ui,可用画笔设置字体大小，颜色等参数
                         mPaint.setColor(Color.BLUE);
                         mPaint.setTextSize(100);
                         return mPaint;
@@ -69,7 +69,7 @@ public class SystemKeyboardActivity extends AppCompatActivity implements View.On
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mKeyboard.recycle();
+        mKeyboard.recycle(); //回收
     }
 
     private void showShortToast(String str) {
