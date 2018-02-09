@@ -1,25 +1,98 @@
-# KeyBoardView
-安卓自定义数字键盘(含4位自动加空格的功能,仿支付宝键盘，自动顶布局)
-## 效果图：
+## EasyKeyBoardView
+EasyKeyBoardView旨在帮助开发者快速实现一个自定义键盘，无需实现键盘内部的输入逻辑，只需关注键盘的
+布局和输入后的功能实现即可
+### 功能介绍：
+该库是基于安卓原生键盘API实现，只需提供布局文件即可快速实现一个自定义键盘，内部已封装好键盘的输入逻辑，并提供了两种不同的弹出方式：
 
-[效果动图下载](https://github.com/Jay-huangjie/KeyBoardView/blob/master/img/Screen%20Record_2017-03-19-23-02-31.mp4?=true "效果动图下载")  
+* 键盘固定在底部
+* 键盘从底部弹出(如果键盘遮挡了输入框,EasyKeyBoardView会自动将输入框顶上去)
 
- ## 实现方法
- ### 由于需要实现自动顶布局，所以采用的popwindow的方法实现的软键盘,重写Edittext,并且根据项目需求加入输入4位自动空格的方法
- ![演示图片](https://github.com/Jay-huangjie/KeyBoardView/blob/master/img/Screenshot_2017-03-20-00-15-41.png)
- 
- ## 自定义属性
- `xml` 自定义键盘布局 <br>
- `spance` 是否开启4位空格 <br>
- `randomkeys` 是否开启随机数字键盘
- 
- ## 自定义方法
- `setKeyBordFocuable(boolean focuable)` 设置是否禁止输入，注意，如果你使用原始的方法禁止输入字符
- ，点击会弹出自定义键盘，所以请使用此方法禁止
- 
- ````
- 此键盘可以与原生键盘完美切换，如果只需要纯数字可以在原有xml文件上稍做修改
- ````
- 
- # 如果对您有用，欢迎Star
- 
+### 效果图
+图一:
+![图一](http://p2p0lrpx1.bkt.clouddn.com/k1.gif-gif)
+图二：
+![图二](http://p2p0lrpx1.bkt.clouddn.com/k2.gif-gif)
+
+### 使用
+第一步：
+在你的root build.gradle中添加
+```
+	allprojects {
+		repositories {
+			...
+			maven { url 'https://jitpack.io' }
+		}
+	}
+```
+
+在 app build.gradle中添加
+```
+	dependencies {
+	        implementation 'com.github.Jay-huangjie:EasyKeyBoardView:v1.1'
+	}
+```
+
+第二步：
+#### 实现固定在底部的键盘
+在xml中定义：
+```java
+ <com.jay.easykeyboard.SystemKeyboard
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        keyboard:xmlLayoutResId="@xml/keyboard_numbers" />
+```
+其中:
+
+`keyboard_numbers`是该键盘的布局文件，由使用者自己编写,名称可自取
+
+其他xml属性:
+
+`keyViewbg` 用于设置键盘的按压效果和按钮之间线的粗细颜色等
+
+`xmlLayoutResId`设置该布局文件
+
+
+java属性：
+
+`setXmlLayoutResId`可用于在java中指定布局
+
+`setKeyboardUI`可用来定义键盘上字体的UI，如颜色，大小
+
+`setKeybgDrawable` 设置按压效果文件
+
+`setOnKeyboardActionListener`实现键盘监听接口,**注意，此接口必须实现，且必须实现其中的onKey()方法,详情请见demo**
+
+#### 实现弹出的键盘
+在xml中定义：
+```java
+ <com.jay.easykeyboard.SystemKeyBoardEditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        keyboard:xmlLayoutResId="@xml/keyboard_numbers"
+        />
+```
+xml属性：
+
+`space` 开启4位空格功能,使用场景是输入身份证或银行卡号的时候。
+
+其他用法与`SystemKeyboard`一样，`SystemKeyBoardEditText`实际是`SystemKeyboard`的进一步封装，通过`EditText`与`PopupWindow`结合的方法来实现键盘的灵活弹出.
+
+可以通过`getSystemKeyboard`方法来获取到`SystemKeyBoard`对象。
+
+需要注意的是，如果你是在`RecyclerView`或`ListView`中使用，由于item的复用性,请设置`setActiveRelease(false)`来关闭主动回收功能,然后在合适的场景调用`recycle()`方法来回收。
+
+### 更新日志
+```
+2018/2/9
+重构项目,将项目发布到了JitPack仓库
+```
+
+### 后续优化
+* 加入随机键盘功能
+* 解决在RecyclerView中的回收问题
+* 优化KeyBoardView的模式，期望增加唯一键盘模式(待设计ing)
+
+### end
+有任何问题可以在issuse中反馈，如果对你有帮助，希望给我颗小星星
+
+
