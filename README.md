@@ -45,6 +45,8 @@ EasyKeyBoardView旨在帮助开发者快速实现一个自定义键盘，无需�
 
 `keyboard_numbers`是该键盘的布局文件，由使用者自己编写,名称可自取
 
+关于xml里codes的定义问题，可以参阅[ASCI码对照表](http://ascii.911cha.com/)来取值，找到对应的图形编码，对应的10进制就是我们想要的codes了
+
 其他xml属性:
 
 `keyViewbg` 用于设置键盘的按压效果和按钮之间线的粗细颜色等
