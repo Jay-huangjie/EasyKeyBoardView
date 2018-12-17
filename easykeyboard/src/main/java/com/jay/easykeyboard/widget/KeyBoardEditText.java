@@ -1,4 +1,4 @@
-package com.jay.easykeyboard.base;
+package com.jay.easykeyboard.widget;
 
 import android.app.Activity;
 import android.content.Context;
@@ -17,30 +17,27 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.PopupWindow;
 
 import com.jay.easykeyboard.R;
-import com.jay.easykeyboard.constant.Util;
+import com.jay.easykeyboard.util.Util;
 
 /**
  * Created by huangjie on 2018/2/5.
- * 类名：
- * 说明：
+ * 类名：能弹出自定义键盘的EditText抽象类
  */
-
 public abstract class KeyBoardEditText extends AppCompatEditText {
     private Activity activity;
-    private int real_scontenth;
+    private int realHeight; //界面实际高度
     private PopupWindow mKeyboardWindow;
-    private Window mWindow;
     private View mDecorView;
     private View mContentView;
     private int scrolldis;
 
 
     public KeyBoardEditText(Context context) {
-        this(context,null);
+        this(context, null);
     }
 
     public KeyBoardEditText(Context context, AttributeSet attrs) {
-        this(context, attrs,0);
+        this(context, attrs, 0);
     }
 
     public KeyBoardEditText(Context context, AttributeSet attrs, int defStyleAttr) {
@@ -50,7 +47,7 @@ public abstract class KeyBoardEditText extends AppCompatEditText {
 
     private void init(Context context) {
         if (context instanceof Activity) activity = (Activity) context;
-        real_scontenth = Util.getContentHeight(context);
+        realHeight = Util.getContentHeight(context);
         this.setImeOptions(EditorInfo.IME_FLAG_NO_EXTRACT_UI);
         if (this.getText() != null) {
             this.setSelection(this.getText().length());
@@ -59,7 +56,7 @@ public abstract class KeyBoardEditText extends AppCompatEditText {
     }
 
     protected void initPopWindow(View contentView) {
-        mKeyboardWindow = new PopupWindow(contentView, ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+        mKeyboardWindow = new PopupWindow(contentView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         mKeyboardWindow.setAnimationStyle(R.style.AnimationFade);
         mKeyboardWindow.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         mKeyboardWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
@@ -82,39 +79,28 @@ public abstract class KeyBoardEditText extends AppCompatEditText {
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
         if (null != activity) {
-            mWindow = activity.getWindow();
+            Window mWindow = activity.getWindow();
             mDecorView = mWindow.getDecorView();
             mContentView = mDecorView.findViewById(Window.ID_ANDROID_CONTENT);
         }
-        Util.closeKeyboard(getContext(), this);
+        Util.disableShowSoftInput(this);
     }
-
-    public void recycle(){
-        mKeyboardWindow = null;
-        mDecorView = null;
-        mContentView = null;
-        mWindow = null;
-        activity = null;
-    }
-
-
-
 
     protected void showKeyboardWindow() {
         if (null != mKeyboardWindow) {
             if (!mKeyboardWindow.isShowing()) {
                 mKeyboardWindow.showAtLocation(this.mDecorView, Gravity.BOTTOM, 0, 0);
                 if (null != mDecorView && null != mContentView) {
-                    View popContentView = mKeyboardWindow.getContentView();
+                    final View popContentView = mKeyboardWindow.getContentView();
                     popContentView.post(new Runnable() {
                         @Override
                         public void run() {
                             int[] pos = new int[2];
                             getLocationOnScreen(pos);
-                            float height = mKeyboardWindow.getContentView().getMeasuredHeight();
+                            float height = popContentView.getMeasuredHeight();
                             Rect outRect = new Rect();
                             mDecorView.getWindowVisibleDisplayFrame(outRect);
-                            int screen = real_scontenth;
+                            int screen = realHeight;
                             scrolldis = (int) ((pos[1] + getMeasuredHeight() - outRect.top) - (screen - height));
                             if (scrolldis > 0) {
                                 mContentView.scrollBy(0, scrolldis);
@@ -132,6 +118,14 @@ public abstract class KeyBoardEditText extends AppCompatEditText {
                 mKeyboardWindow.dismiss();
             }
         }
+    }
+
+    protected boolean isShowing() {
+        boolean isShowing = false;
+        if (null != mKeyboardWindow) {
+            isShowing = mKeyboardWindow.isShowing();
+        }
+        return isShowing;
     }
 
     public PopupWindow getKeyboardWindow() {

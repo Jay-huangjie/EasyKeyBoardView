@@ -1,8 +1,10 @@
-package com.jay.easykeyboard.constant;
+package com.jay.easykeyboard.util;
 
 import android.app.Activity;
 import android.content.Context;
 import android.os.Build;
+import android.support.v7.widget.AppCompatEditText;
+import android.support.v7.widget.AppCompatImageView;
 import android.text.InputType;
 import android.util.DisplayMetrics;
 import android.view.Display;
@@ -51,60 +53,49 @@ public class Util {
     }
 
 
-    /**
-     * 隐藏软键盘
-     * @param activity
-     */
-    public static void hideKeyboard(Activity activity){
-        View view = activity.getWindow().peekDecorView();
-        if (view != null) {
-            InputMethodManager inputmanger = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
-            inputmanger.hideSoftInputFromWindow(view.getWindowToken(), 0);
-        }
-    }
+
 
     /**
-     * 关闭软键盘
-     * @param context
-     * @param editText
+     * 禁止Edittext弹出软件盘，光标依然正常显示,并且能正常选取光标
      */
-    public static void closeKeyboard(Context context, EditText editText) {
-        InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
-    }
-
-    /**
-     * 打开软键盘
-     * @param activity
-     * @param editText
-     */
-    public static void openKeyboard(Activity activity, EditText editText) {
-        InputMethodManager imm = (InputMethodManager)activity.getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.showSoftInput(editText, InputMethodManager.RESULT_SHOWN);
-        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
-    }
-
-    /*
-    * 关闭软键盘显示游标
-    * */
-    public static void showCursor(Activity activity, EditText editText){
-        if (android.os.Build.VERSION.SDK_INT <= 10) {
-            editText.setInputType(InputType.TYPE_NULL);
-        } else {
-            activity.getWindow().setSoftInputMode(
-                    WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+    public static void disableShowSoftInput(EditText editText) {
+            Class<EditText> cls = EditText.class;
+            Method method;
             try {
-                Class<EditText> cls = EditText.class;
-                Method setShowSoftInputOnFocus;
-                setShowSoftInputOnFocus = cls.getMethod(
-                        "setShowSoftInputOnFocus", boolean.class);
-                setShowSoftInputOnFocus.setAccessible(true);
-                setShowSoftInputOnFocus.invoke(editText, false);
+                method = cls.getMethod("setShowSoftInputOnFocus", boolean.class);
+                method.setAccessible(true);
+                method.invoke(editText, false);
             } catch (Exception e) {
                 e.printStackTrace();
             }
+    }
+
+    /*
+    * 显示键盘
+    * */
+    public static void showKeyboard(View view){
+        if (view!=null) {
+            InputMethodManager imm = (InputMethodManager) view.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+            if (imm != null) {
+                view.requestFocus();
+                imm.showSoftInput(view, 0);
+            }
         }
     }
+
+    /**
+     * 隐藏软键盘
+     */
+    public static void hideKeyboard(Context context){
+        View view = ((Activity)context).getWindow().peekDecorView();
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+            if (imm!=null){
+                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+            }
+        }
+    }
+
 
     /**
      * 获取实际内容高度

@@ -8,10 +8,11 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         keyboard:xmlLayoutResId="@xml/keyboard_numbers"
+        keyboard:outSideCancel="true"
         android:id="@+id/skb_top"
         android:hint="顶部EditText"
         android:layout_margin="10dp"
-        android:background="@drawable/edit_bg"
+        android:background="@drawable/btn_keyboard_key"
         />
     <com.jay.easykeyboard.SystemKeyBoardEditText
         android:layout_width="match_parent"
@@ -22,6 +23,6 @@
         android:id="@+id/skb_bottom"
         keyboard:space="true"
         keyboard:xmlLayoutResId="@xml/keyboard_numbers"
-        android:background="@drawable/edit_bg"
+        android:background="@drawable/btn_keyboard_key"
         />
 </RelativeLayout>

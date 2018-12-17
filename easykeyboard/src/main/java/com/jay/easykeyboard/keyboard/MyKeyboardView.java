@@ -9,12 +9,9 @@ import android.graphics.drawable.Drawable;
 import android.inputmethodservice.Keyboard.Key;
 import android.inputmethodservice.KeyboardView;
 import android.util.AttributeSet;
-
-import com.jay.easykeyboard.R;
-
 import java.util.List;
 
-
+//核心类，承担绘制工作
 public class MyKeyboardView extends KeyboardView {
 
     private Drawable mKeybgDrawable;
@@ -32,8 +29,7 @@ public class MyKeyboardView extends KeyboardView {
     }
 
     private void initResources(Context context) {
-       Resources res = context.getResources();
-        mKeybgDrawable = res.getDrawable(R.drawable.btn_keyboard_key);
+        Resources res = context.getResources();
         rect = new Rect();
         paint = new Paint();
         paint.setAntiAlias(true);
@@ -53,6 +49,9 @@ public class MyKeyboardView extends KeyboardView {
 
     public void setPaint(Paint paint){
         this.paint = paint;
+        if (paint==null){
+            throw new NullPointerException("Paint is not null");
+        }
         invalidate();
     }
 
@@ -67,15 +66,19 @@ public class MyKeyboardView extends KeyboardView {
                 offsety = 1;
             }
             int initdrawy = key.y + offsety;
-            rect.left = key.x;
-            rect.top = initdrawy;
-            rect.right = key.x+key.width;
-            rect.bottom = key.y+key.height;
-            canvas.clipRect(rect);
-            int[] state = key.getCurrentDrawableState();
-            mKeybgDrawable.setState(state);
-            mKeybgDrawable.setBounds(rect);
-            mKeybgDrawable.draw(canvas);
+            if (mKeybgDrawable!=null) {
+                rect.left = key.x;
+                rect.top = initdrawy;
+                rect.right = key.x + key.width;
+                rect.bottom = key.y + key.height;
+                canvas.clipRect(rect);
+                int[] state = key.getCurrentDrawableState();
+                //设置按压效果
+                mKeybgDrawable.setState(state);
+                //设置边距
+                mKeybgDrawable.setBounds(rect);
+                mKeybgDrawable.draw(canvas);
+            }
             if (key.label != null) {
                 canvas.drawText(
                         key.label.toString(),

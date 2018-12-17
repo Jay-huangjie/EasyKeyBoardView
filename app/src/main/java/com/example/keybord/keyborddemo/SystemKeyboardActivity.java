@@ -2,30 +2,31 @@ package com.example.keybord.keyborddemo;
 
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.inputmethodservice.Keyboard;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.jay.easykeyboard.SystemKeyboard;
-import com.jay.easykeyboard.function.SystemOnKeyboardActionListener;
+import com.jay.easykeyboard.action.IKeyBoardUI;
+import com.jay.easykeyboard.action.KeyBoardActionListence;
+import com.jay.easykeyboard.util.Util;
 
 /**
  * Created by huangjie on 2018/2/6.
  * 类名：
- * 说明：
+ * 说明：此Activity实现了键盘固定的情况下的使用
  */
 
 public class SystemKeyboardActivity extends AppCompatActivity implements View.OnFocusChangeListener {
 
+    private static final String TAG = "SystemKeyboardActivity";
     private SystemKeyboard mKeyboard;
-    private SystemOnKeyboardActionListener listener;
-    private EditText edit1;
-    private EditText edit2;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -33,20 +34,30 @@ public class SystemKeyboardActivity extends AppCompatActivity implements View.On
         setContentView(R.layout.activity_systemkeyboard);
         mKeyboard = findViewById(R.id.systemkeyboard);
         Button btn_setkeyui = findViewById(R.id.btn_setkeyui);
-        edit1 = findViewById(R.id.edit);
-        edit2 = findViewById(R.id.edit2);
-        listener = new SystemOnKeyboardActionListener() {
+        EditText edit1 = findViewById(R.id.edit);
+        EditText edit2 = findViewById(R.id.edit2);
+        mKeyboard.setEditText(edit1); //用于绑定EditText,如果切换了EditText，请务必设置此方法
+        mKeyboard.setOnKeyboardActionListener(new KeyBoardActionListence() {
             @Override
-            public void onKey(int primaryCode, int[] keyCodes) {
-                //必须实现该方法,其余方法可选择实现,该方法的作用是将输入的值附到EditText上，同时进行键盘按键监听
-                super.onKey(primaryCode, keyCodes);
-                if (primaryCode == Keyboard.KEYCODE_DONE) {
-                    showShortToast("点击了完成按钮");
-                }
+            public void onComplete() {
+                showShortToast("完成");
             }
-        };
-        listener.setEditText(edit1); //用于绑定EditText,如果切换了EditText，请务必设置此方法
-        mKeyboard.setOnKeyboardActionListener(listener);
+
+            @Override
+            public void onTextChange(Editable editable) {
+                Log.i(TAG,"onTextChange:"+editable.toString());
+            }
+
+            @Override
+            public void onClear() {
+                showShortToast("onClear");
+            }
+
+            @Override
+            public void onClearAll() {
+                showShortToast("onClearAll");
+            }
+        });
 
         edit1.setOnFocusChangeListener(this);
         edit2.setOnFocusChangeListener(this);
@@ -54,22 +65,17 @@ public class SystemKeyboardActivity extends AppCompatActivity implements View.On
         btn_setkeyui.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mKeyboard.setKeyboardUI(new SystemKeyboard.KeyUI() {
+                //改变ui
+                mKeyboard.setKeyboardUI(new IKeyBoardUI() {
                     @Override
-                    public Paint paintConfig(Paint mPaint) { //更新Ui,可用画笔设置字体大小，颜色等参数
-                        mPaint.setColor(Color.BLUE);
-                        mPaint.setTextSize(100);
-                        return mPaint;
+                    public Paint setPaint(Paint paint) {
+                        paint.setColor(Color.BLUE);
+                        paint.setTextSize(Util.dpToPx(getApplicationContext(),16));
+                        return paint;
                     }
                 });
             }
         });
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        mKeyboard.recycle(); //回收
     }
 
     private void showShortToast(String str) {
@@ -79,8 +85,14 @@ public class SystemKeyboardActivity extends AppCompatActivity implements View.On
     @Override
     public void onFocusChange(View v, boolean hasFocus) {
         if (hasFocus) {
-            if (v instanceof EditText)
-            listener.setEditText((EditText) v);
+            switch (v.getId()){
+                case R.id.edit: //绑定EditText并显示自定义键盘
+                    mKeyboard.setEditText((EditText) v);
+                    break;
+                case R.id.edit2: //绑定EditText并显示原生键盘
+                    mKeyboard.setEditText((EditText) v,true);
+                    break;
+            }
         }
     }
 }

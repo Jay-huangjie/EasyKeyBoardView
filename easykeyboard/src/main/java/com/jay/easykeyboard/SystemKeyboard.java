@@ -1,21 +1,21 @@
 package com.jay.easykeyboard;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.inputmethodservice.Keyboard;
-import android.inputmethodservice.KeyboardView;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 
-import com.jay.easykeyboard.constant.Util;
-import com.jay.easykeyboard.function.SystemOnKeyboardActionListener;
+import com.jay.easykeyboard.action.IKeyBoardUI;
+import com.jay.easykeyboard.action.KeyBoardActionListence;
+import com.jay.easykeyboard.impl.SystemOnKeyboardActionListener;
 import com.jay.easykeyboard.keyboard.MyKeyboardView;
+import com.jay.easykeyboard.util.Util;
 
 /**
  * Created by huangjie on 2018/2/3.
@@ -28,10 +28,7 @@ public class SystemKeyboard extends FrameLayout {
     private MyKeyboardView keyboardView;
     private Drawable keybgDrawable;
     private Keyboard mKeyboard;
-
-    public interface KeyUI {
-        Paint paintConfig(Paint mPaint);
-    }
+    private SystemOnKeyboardActionListener actionListener;
 
     public SystemKeyboard(Context context) {
         this(context, null);
@@ -48,18 +45,13 @@ public class SystemKeyboard extends FrameLayout {
 
     private void init(Context context, @Nullable AttributeSet attrs) {
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.SystemKeyboard);
+        if (a.hasValue(R.styleable.SystemKeyboard_keyViewbg)) {
+            keybgDrawable = a.getDrawable(R.styleable.SystemKeyboard_keyViewbg);
+        }
         if (a.hasValue(R.styleable.SystemKeyboard_xmlLayoutResId)) {
             int xmlLayoutResId = a.getResourceId(R.styleable.SystemKeyboard_xmlLayoutResId, 0);
             initKeyBoard(context, xmlLayoutResId);
         }
-        if (a.hasValue(R.styleable.SystemKeyboard_keyViewbg))
-            keybgDrawable = a.getDrawable(R.styleable.SystemKeyboard_keyViewbg);
-//        if (a.hasValue(R.styleable.SystemKeyboard_randomkeys)) {
-//            boolean randomkeys = a.getBoolean(R.styleable.SystemKeyboard_randomkeys, false);
-//            if (randomkeys) {
-//                randomdigkey();
-//            }
-//        }
         a.recycle();
     }
 
@@ -72,7 +64,8 @@ public class SystemKeyboard extends FrameLayout {
         if (null != keybgDrawable) {
             keyboardView.setKeybgDrawable(keybgDrawable);
         }
-        setOnKeyboardActionListener(new SystemOnKeyboardActionListener());
+        actionListener = new SystemOnKeyboardActionListener();
+        keyboardView.setOnKeyboardActionListener(actionListener);
         this.addView(keyboardView);
     }
 
@@ -122,20 +115,6 @@ public class SystemKeyboard extends FrameLayout {
         return mKeyboard;
     }
 
-    public void UserNativeKeyboard(boolean isUser) {
-        if (isUser) setVisibility(GONE);
-        else setVisibility(VISIBLE);
-    }
-
-    public void UserNativeKeyboard(boolean isUser, Activity activity, EditText editText) {
-        if (isUser) {
-            setVisibility(GONE);
-            Util.openKeyboard(activity, editText);
-        } else {
-            setVisibility(VISIBLE);
-            Util.hideKeyboard(activity);
-        }
-    }
 
     public void setXmlLayoutResId(int xmlLayoutResId) {
         initKeyBoard(getContext(), xmlLayoutResId);
@@ -151,21 +130,41 @@ public class SystemKeyboard extends FrameLayout {
             keyboardView.setKeybgDrawable(keybgDrawable);
     }
 
-    public void setOnKeyboardActionListener(KeyboardView.OnKeyboardActionListener onKeyboardActionListener){
-        if (onKeyboardActionListener!=null)
-            keyboardView.setOnKeyboardActionListener(onKeyboardActionListener);
+
+    /**
+     * 建立与EditText的绑定关系，用于控制输入值
+     *
+     * @param editText 绑定EditText 默认显示自定义键盘
+     */
+    public void setEditText(@NonNull EditText editText) {
+        setEditText(editText, false);
     }
 
-    public void setKeyboardUI(KeyUI ui) {
-        if (null != ui) {
-            keyboardView.setPaint(ui.paintConfig(keyboardView.getPaint()));
+    /**
+     * 建立与EditText的绑定关系，用于控制输入值
+     *
+     * @param editText             需要绑定的EditText
+     * @param isOpenNativeKeyBoard 是否打开原生键盘
+     */
+    public void setEditText(@NonNull EditText editText, boolean isOpenNativeKeyBoard) {
+        actionListener.setEditText(editText);
+        if (isOpenNativeKeyBoard) {
+            Util.showKeyboard(editText);
+            setVisibility(GONE);
+        } else {
+            setVisibility(VISIBLE);
+            Util.disableShowSoftInput(editText);
+            Util.hideKeyboard(editText.getContext());
         }
     }
 
+    public void setOnKeyboardActionListener(KeyBoardActionListence listener) {
+        actionListener.setKeyActionListence(listener);
+    }
 
-    public void recycle() {
-        keyboardView.setOnKeyboardActionListener(null);
-        keyboardView = null;
-        mKeyboard = null;
+    public void setKeyboardUI(IKeyBoardUI ui) {
+        if (null != ui) {
+            keyboardView.setPaint(ui.setPaint(keyboardView.getPaint()));
+        }
     }
 }

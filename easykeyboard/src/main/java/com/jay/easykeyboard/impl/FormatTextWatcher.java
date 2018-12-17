@@ -1,4 +1,4 @@
-package com.jay.easykeyboard.function;
+package com.jay.easykeyboard.impl;
 
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -7,7 +7,7 @@ import android.widget.EditText;
 /**
  * Created by huangjie on 2018/2/5.
  * 类名：
- * 说明：
+ * 说明：4位空格实现类
  */
 
 public class FormatTextWatcher implements TextWatcher {
@@ -22,10 +22,11 @@ public class FormatTextWatcher implements TextWatcher {
     private int unit = 4;
     //间隔符
     private String tag = " ";
-    int beforeTextLength = 0;
-    int afterTextLength = 0;
-    int location = 0;//记录光标的位置
-    boolean isChanging = false;// 是否更换中
+    private int beforeTextLength = 0;
+    private int afterTextLength = 0;
+    private int location = 0;//记录光标的位置
+    private boolean isChanging = false;// 是否更换中
+
     @Override
     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
         beforeTextLength = s.length();
@@ -104,7 +105,7 @@ public class FormatTextWatcher implements TextWatcher {
      * @param str
      * @return
      */
-    public String replaceTag(String str) {
+    private String replaceTag(String str) {
         if (str.contains(tag)) {
             str = str.replace(tag, "");
         }
