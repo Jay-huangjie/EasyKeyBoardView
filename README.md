@@ -62,7 +62,9 @@ java属性：
 
 `setKeybgDrawable` 设置按压效果文件
 
-`setOnKeyboardActionListener`实现键盘监听接口,**注意，此接口必须实现，且必须实现其中的onKey()方法,详情请见demo**
+`setOnKeyboardActionListener` 键盘输入监听
+
+如果需要实现焦点监听，需要实现`setFocusChangeListence`接口，注意是项目方法不是原生Api方法噢。
 
 #### 实现弹出的键盘
 在xml中定义：
@@ -77,21 +79,28 @@ xml属性：
 
 `space` 开启4位空格功能,使用场景是输入身份证或银行卡号的时候。
 
+`outSideCancel` 此属性为`SystemKeyBoardEditText`属性，设置点击外部可取消
+
+
 其他用法与`SystemKeyboard`一样，`SystemKeyBoardEditText`实际是`SystemKeyboard`的进一步封装，通过`EditText`与`PopupWindow`结合的方法来实现键盘的灵活弹出.
 
 可以通过`getSystemKeyboard`方法来获取到`SystemKeyBoard`对象。
 
-需要注意的是，如果你是在`RecyclerView`或`ListView`中使用，由于item的复用性,请设置`setActiveRelease(false)`来关闭主动回收功能,然后在合适的场景调用`recycle()`方法来回收。
+#### 其他
+如果在项目中需要进行原生与自定义键盘的切换，可以使用`setEditText`方法，进行EditText的输入切换
 
 ### 更新日志
 ```
 2018/2/9
 重构项目,将项目发布到了JitPack仓库
+
+2018/12/17
+项目v1.2重构，解决输入框焦点选取问题，加入点击外部关闭自定义键盘功能，项目架构调整
 ```
 
 ### 后续优化
 * 加入随机键盘功能
-* 解决在RecyclerView中的回收问题
+* ~~解决在RecyclerView中的回收问题~~
 * 优化KeyBoardView的模式，期望增加唯一键盘模式(待设计ing)
 
 ### end
