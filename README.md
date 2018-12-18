@@ -94,8 +94,13 @@ xml属性：
 
 可以通过`getSystemKeyboard`方法来获取到`SystemKeyBoard`对象。
 
+启用`removeCopyAndPaste`方法可以屏蔽EditText的长按复制粘贴功能
+
 #### 其他
 如果在项目中需要进行原生与自定义键盘的切换或者输入框的切换，可以使用`setEditText`方法，进行EditText的输入目标切换
+
+混淆：
+`-keep public class com.jay.easykeyboard.bean.**{ *;}`
 
 ### 更新日志
 ```
