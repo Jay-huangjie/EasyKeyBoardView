@@ -55,6 +55,10 @@ public abstract class KeyBoardEditText extends AppCompatEditText {
 
     }
 
+    /**
+     * 初始化popindow
+     * @param contentView layout
+     */
     protected void initPopWindow(View contentView) {
         mKeyboardWindow = new PopupWindow(contentView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         mKeyboardWindow.setAnimationStyle(R.style.AnimationFade);
@@ -86,6 +90,10 @@ public abstract class KeyBoardEditText extends AppCompatEditText {
         Util.disableShowSoftInput(this);
     }
 
+
+    /**
+     * 打开键盘
+     */
     protected void showKeyboardWindow() {
         if (null != mKeyboardWindow) {
             if (!mKeyboardWindow.isShowing()) {
@@ -112,6 +120,10 @@ public abstract class KeyBoardEditText extends AppCompatEditText {
         }
     }
 
+
+    /**
+     * 关闭键盘
+     */
     protected void dismissKeyboardWindow() {
         if (null != mKeyboardWindow) {
             if (mKeyboardWindow.isShowing()) {
@@ -120,6 +132,10 @@ public abstract class KeyBoardEditText extends AppCompatEditText {
         }
     }
 
+    /**
+     * 判断键盘是否打开
+     * @return isShowing
+     */
     protected boolean isShowing() {
         boolean isShowing = false;
         if (null != mKeyboardWindow) {
@@ -128,6 +144,10 @@ public abstract class KeyBoardEditText extends AppCompatEditText {
         return isShowing;
     }
 
+    /**
+     * 获取popwindow对象
+     * @return mKeyboardWindow
+     */
     public PopupWindow getKeyboardWindow() {
         return mKeyboardWindow;
     }

@@ -9,6 +9,7 @@ import android.graphics.drawable.Drawable;
 import android.inputmethodservice.Keyboard.Key;
 import android.inputmethodservice.KeyboardView;
 import android.util.AttributeSet;
+
 import java.util.List;
 
 //核心类，承担绘制工作
@@ -60,7 +61,6 @@ public class MyKeyboardView extends KeyboardView {
         List<Key> keys = getKeyboard().getKeys();
         for (Key key : keys) {
             canvas.save();
-
             int offsety = 0;
             if (key.y == 0) {
                 offsety = 1;

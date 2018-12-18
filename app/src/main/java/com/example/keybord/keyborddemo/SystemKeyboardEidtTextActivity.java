@@ -16,39 +16,20 @@ import com.jay.easykeyboard.impl.SystemOnKeyboardActionListener;
 /**
  * Created by huangjie on 2018/2/6.
  * 类名：
- * 说明：
+ * 说明：附带EditText的popwindow形式弹出的键盘
  */
 
 public class SystemKeyboardEidtTextActivity extends AppCompatActivity implements KeyBoardActionListence {
-
-    private SystemKeyBoardEditText skb_top;
-    private SystemKeyBoardEditText skb_bottom;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_systemkeyboardedittext);
-        skb_top = findViewById(R.id.skb_top);
-        skb_bottom = findViewById(R.id.skb_bottom);
+        SystemKeyBoardEditText skb_top = findViewById(R.id.skb_top);
+        SystemKeyBoardEditText skb_bottom = findViewById(R.id.skb_bottom);
         skb_top.setOnKeyboardActionListener(this);
         skb_bottom.setOnKeyboardActionListener(this);
-//        skb_top.setOnFocusChangeListener(this);
-//        skb_bottom.setOnFocusChangeListener(this);
     }
-
-
-    private void showShortToast(String str){
-        Toast.makeText(this, str, Toast.LENGTH_SHORT).show();
-    }
-
-//    @Override
-//    public void onFocusChange(View v, boolean hasFocus) {
-//        if (hasFocus){
-//            if (v instanceof SystemKeyBoardEditText){
-//                ()v.setEditText((EditText) v);
-//            }
-//        }
-//    }
 
     @Override
     public void onComplete() {

@@ -41,40 +41,48 @@ public class Util {
         String wordStr = "abcdefghijklmnopqrstuvwxyz";
         return wordStr.contains(str.toLowerCase());
     }
+//
+//    //判断是否是数字(包含正负数校验)
+//    public static boolean isNumeric(String str) {
+//        Pattern pattern = Pattern.compile("-?[0-9]+.?[0-9]+");
+//        Matcher isNum = pattern.matcher(str);
+//        if (!isNum.matches()) {
+//            return false;
+//        }
+//        return true;
+//    }
 
-    //判断是否是数字(包含正负数校验)
     public static boolean isNumeric(String str) {
-        Pattern pattern = Pattern.compile("-?[0-9]+.?[0-9]+");
-        Matcher isNum = pattern.matcher(str);
-        if (!isNum.matches()) {
-            return false;
+        for (int i = 0; i < str.length(); i++) {
+            System.out.println(str.charAt(i));
+            if (!Character.isDigit(str.charAt(i))) {
+                return false;
+            }
         }
         return true;
     }
-
-
 
 
     /**
      * 禁止Edittext弹出软件盘，光标依然正常显示,并且能正常选取光标
      */
     public static void disableShowSoftInput(EditText editText) {
-            Class<EditText> cls = EditText.class;
-            Method method;
-            try {
-                method = cls.getMethod("setShowSoftInputOnFocus", boolean.class);
-                method.setAccessible(true);
-                method.invoke(editText, false);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+        Class<EditText> cls = EditText.class;
+        Method method;
+        try {
+            method = cls.getMethod("setShowSoftInputOnFocus", boolean.class);
+            method.setAccessible(true);
+            method.invoke(editText, false);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /*
-    * 显示键盘
-    * */
-    public static void showKeyboard(View view){
-        if (view!=null) {
+     * 显示键盘
+     * */
+    public static void showKeyboard(View view) {
+        if (view != null) {
             InputMethodManager imm = (InputMethodManager) view.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
             if (imm != null) {
                 view.requestFocus();
@@ -86,11 +94,11 @@ public class Util {
     /**
      * 隐藏软键盘
      */
-    public static void hideKeyboard(Context context){
-        View view = ((Activity)context).getWindow().peekDecorView();
+    public static void hideKeyboard(Context context) {
+        View view = ((Activity) context).getWindow().peekDecorView();
         if (view != null) {
             InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
-            if (imm!=null){
+            if (imm != null) {
                 imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
             }
         }
@@ -99,14 +107,15 @@ public class Util {
 
     /**
      * 获取实际内容高度
+     *
      * @param context
      * @return
      */
-    public static int getContentHeight(Context context){
+    public static int getContentHeight(Context context) {
         int screenh_nonavbar = 0;
         DisplayMetrics dMetrics = new DisplayMetrics();
         WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
-        if (windowManager!=null) {
+        if (windowManager != null) {
             Display display = windowManager.getDefaultDisplay();
             display.getMetrics(dMetrics);
             screenh_nonavbar = dMetrics.heightPixels;

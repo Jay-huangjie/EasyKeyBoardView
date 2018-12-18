@@ -27,6 +27,7 @@ public class SystemKeyboardActivity extends AppCompatActivity implements View.On
 
     private static final String TAG = "SystemKeyboardActivity";
     private SystemKeyboard mKeyboard;
+    private boolean isRandom =false;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -74,6 +75,14 @@ public class SystemKeyboardActivity extends AppCompatActivity implements View.On
                         return paint;
                     }
                 });
+            }
+        });
+
+        findViewById(R.id.btn_random).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                isRandom = !isRandom;
+                mKeyboard.setRandomkeys(isRandom);
             }
         });
     }

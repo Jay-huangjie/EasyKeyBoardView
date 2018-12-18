@@ -99,8 +99,8 @@ public class SystemKeyBoardEditText extends KeyBoardEditText {
                     }, 200);
                     STATUE = STAR;
                 }
-                if (focusChangeListence!=null){
-                    focusChangeListence.OnFocusChangeListener(v,hasFocus);
+                if (focusChangeListence != null) {
+                    focusChangeListence.OnFocusChangeListener(v, hasFocus);
                 }
             }
         });
@@ -108,13 +108,12 @@ public class SystemKeyBoardEditText extends KeyBoardEditText {
 
     private void init(Context context, AttributeSet attrs) {
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.SystemKeyBoardEditText);
-//        boolean randomkeys = a.getBoolean(R.styleable.SystemKeyBoardEditText_randomkeys, false);
+        boolean randomkeys = a.getBoolean(R.styleable.SystemKeyboard_isRandom, false);
         int xmlLayoutResId = a.getResourceId(R.styleable.SystemKeyBoardEditText_xmlLayoutResId, 0);
         boolean isSpace = a.getBoolean(R.styleable.SystemKeyBoardEditText_space, false);
-        outSideable = a.getBoolean(R.styleable.SystemKeyBoardEditText_outSideCancel,false);
+        outSideable = a.getBoolean(R.styleable.SystemKeyBoardEditText_outSideCancel, false);
         systemKeyboard = new SystemKeyboard(context);
         systemKeyboard.setXmlLayoutResId(xmlLayoutResId);
-//        systemKeyboard.isRandomkeys(randomkeys);
         if (a.hasValue(R.styleable.SystemKeyBoardEditText_keyViewbg)) {
             Drawable keyViewbg = a.getDrawable(R.styleable.SystemKeyBoardEditText_keyViewbg);
             systemKeyboard.setKeybgDrawable(keyViewbg);
@@ -128,6 +127,9 @@ public class SystemKeyBoardEditText extends KeyBoardEditText {
             textWatcher = new FormatTextWatcher(this);
             addTextChangedListener(textWatcher);
         }
+        if (randomkeys) {
+            systemKeyboard.setRandomkeys(true);
+        }
         setCursorVisible(true);
         a.recycle();
     }
@@ -139,6 +141,7 @@ public class SystemKeyBoardEditText extends KeyBoardEditText {
 
     /**
      * 是否加入4位空格功能
+     *
      * @param isSpace true
      */
     public void setSpaceEnable(boolean isSpace) {
@@ -157,6 +160,7 @@ public class SystemKeyBoardEditText extends KeyBoardEditText {
 
     /**
      * 设置键盘输入监听
+     *
      * @param listener listence
      */
     public void setOnKeyboardActionListener(KeyBoardActionListence listener) {
@@ -178,6 +182,7 @@ public class SystemKeyBoardEditText extends KeyBoardEditText {
 
     /**
      * 焦点监听
+     *
      * @param focusChangeListence listence
      */
     public void setFocusChangeListence(OnEditFocusChangeListence focusChangeListence) {
@@ -186,10 +191,15 @@ public class SystemKeyBoardEditText extends KeyBoardEditText {
 
     /**
      * 设置键盘背景 可以用此背景设置线条粗细
+     *
      * @param drawable drawable
      */
     public void setKeyViewBgDrawable(Drawable drawable) {
         if (systemKeyboard != null) systemKeyboard.setKeybgDrawable(drawable);
+    }
+
+    public void setRandomkeys(boolean isRandomkeys) {
+        if (systemKeyboard != null) systemKeyboard.setRandomkeys(isRandomkeys);
     }
 
     /**

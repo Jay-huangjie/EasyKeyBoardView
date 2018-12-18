@@ -19,7 +19,7 @@
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="我是输入2号"
+            android:hint="点我弹出原生键盘"
             android:id="@+id/edit2"
             />
         <Button
@@ -27,6 +27,19 @@
             android:layout_height="wrap_content"
             android:id="@+id/btn_setkeyui"
             android:text="设置键盘UI"
+            android:background="#399cff"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            />
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="随机键盘"
+            android:id="@+id/btn_random"
+            android:background="#399cff"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:layout_marginTop="10dp"
             />
     </LinearLayout>
 
@@ -36,5 +49,6 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         keyboard:keyViewbg="@drawable/btn_keyboard_key"
-        keyboard:xmlLayoutResId="@xml/keyboard_numbers" />
+        keyboard:xmlLayoutResId="@xml/keyboard_numbers"
+        />
 </RelativeLayout>
