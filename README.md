@@ -30,7 +30,7 @@ EasyKeyBoardView旨在帮助开发者快速实现一个自定义键盘，无需�
 在 app build.gradle中添加
 ```
 	dependencies {
-	        implementation 'com.github.Jay-huangjie:EasyKeyBoardView:v1.3'
+	        implementation 'com.github.Jay-huangjie:EasyKeyBoardView:v1.4'
 	}
 ```
 
