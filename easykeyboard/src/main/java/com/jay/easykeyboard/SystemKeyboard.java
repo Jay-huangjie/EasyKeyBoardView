@@ -146,7 +146,8 @@ public class SystemKeyboard extends FrameLayout {
         if (isRandomkeys){
             randomkey();
         }else {
-            initKeyBoard(getContext(), xmlLayoutResId);
+            mKeyboard = new Keyboard(getContext(), xmlLayoutResId);
+            keyboardView.setKeyboard(mKeyboard);
         }
     }
 
