@@ -2,7 +2,9 @@
 EasyKeyBoardView旨在帮助开发者快速实现一个自定义键盘，无需实现键盘内部的输入逻辑，只需关注键盘的
 布局和输入后的功能实现即可
 ### 功能介绍：
-该库是基于安卓原生键盘API实现，只需提供布局文件即可快速实现一个自定义键盘，内部已封装好键盘的输入逻辑，并提供了两种不同的弹出方式：
+该库是基于安卓原生键盘API实现，只需提供布局文件即可快速实现一个自定义键盘，内部已封装好键盘的输入逻辑，并提供了随机数字键盘，每输入4位则空格等功能。
+
+本库提供了两种不同的弹出方式：
 
 * 键盘固定在底部
 * 键盘从底部弹出(如果键盘遮挡了输入框,EasyKeyBoardView会自动将输入框顶上去)
@@ -47,12 +49,13 @@ EasyKeyBoardView旨在帮助开发者快速实现一个自定义键盘，无需�
 
 关于xml里codes的定义问题，可以参阅[ASCI码对照表](http://ascii.911cha.com/)来取值，找到对应的图形编码，对应的10进制就是我们想要的codes了
 
-其他xml属性:
+xml属性:
 
-`keyViewbg` 用于设置键盘的按压效果和按钮之间线的粗细颜色等
-
-`xmlLayoutResId`设置该布局文件
-
+|属性|作用|
+|----|----|
+|keyViewbg|用于设置键盘的按压效果和按钮之间线的粗细颜色等
+|xmlLayoutResId| 设置键盘的布局文件，必须设置
+|isRandom|是否数字随机
 
 java属性：
 
@@ -63,6 +66,8 @@ java属性：
 `setKeybgDrawable` 设置按压效果文件
 
 `setOnKeyboardActionListener` 键盘输入监听
+
+`setRandomkeys` 设置键盘数字随机，如果已随机数字，设置为false即可另数字恢复正常
 
 如果需要实现焦点监听，需要实现`setFocusChangeListence`接口，注意是项目方法不是原生Api方法噢。
 
@@ -77,17 +82,20 @@ java属性：
 ```
 xml属性：
 
-`space` 开启4位空格功能,使用场景是输入身份证或银行卡号的时候。
-
-`outSideCancel` 此属性为`SystemKeyBoardEditText`属性，设置点击外部可取消
-
+|属性|作用|
+|----|----|
+|keyViewbg|用于设置键盘的按压效果和按钮之间线的粗细颜色等
+|xmlLayoutResId| 设置键盘的布局文件，必须设置
+|isRandom|是否数字随机
+|space|开启4位空格功能,使用场景是输入身份证或银行卡号的时候。
+|outSideCancel|点击外部可关闭键盘
 
 其他用法与`SystemKeyboard`一样，`SystemKeyBoardEditText`实际是`SystemKeyboard`的进一步封装，通过`EditText`与`PopupWindow`结合的方法来实现键盘的灵活弹出.
 
 可以通过`getSystemKeyboard`方法来获取到`SystemKeyBoard`对象。
 
 #### 其他
-如果在项目中需要进行原生与自定义键盘的切换，可以使用`setEditText`方法，进行EditText的输入切换
+如果在项目中需要进行原生与自定义键盘的切换或者输入框的切换，可以使用`setEditText`方法，进行EditText的输入目标切换
 
 ### 更新日志
 ```
@@ -96,12 +104,17 @@ xml属性：
 
 2018/12/17
 项目v1.2重构，解决输入框焦点选取问题，加入点击外部关闭自定义键盘功能，项目架构调整
+
+2018/12/18
+加入随机键盘功能
 ```
 
 ### 后续优化
-* 加入随机键盘功能
+* ~~加入随机键盘功能
 * ~~解决在RecyclerView中的回收问题~~
 * 优化KeyBoardView的模式，期望增加唯一键盘模式(待设计ing)
+
+如果有别的未覆盖到的功能希望能在issuse中反馈，个人能想到的场景有限，希望各位大佬集思广益
 
 ### end
 有任何问题可以在issuse中反馈，如果对你有帮助，希望给我颗小星星
