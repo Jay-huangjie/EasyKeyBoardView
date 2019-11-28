@@ -12,8 +12,8 @@ import android.view.LayoutInflater;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 
-import com.jay.easykeyboard.action.IKeyBoardUI;
-import com.jay.easykeyboard.action.KeyBoardActionListence;
+import com.jay.easykeyboard.action.IKeyBoardUIChange;
+import com.jay.easykeyboard.action.KeyBoardActionListener;
 import com.jay.easykeyboard.bean.KeyModel;
 import com.jay.easykeyboard.impl.SystemOnKeyboardActionListener;
 import com.jay.easykeyboard.keyboard.MyKeyboardView;
@@ -34,7 +34,7 @@ import java.util.Random;
 public class SystemKeyboard extends FrameLayout {
     private static final String TAG = "SystemKeyboard";
     private MyKeyboardView keyboardView;
-    private Drawable keybgDrawable;
+    private Drawable keyDrawable;
     private Keyboard mKeyboard;
     private SystemOnKeyboardActionListener actionListener;
     private int xmlLayoutResId;
@@ -54,17 +54,17 @@ public class SystemKeyboard extends FrameLayout {
 
     private void init(Context context, @Nullable AttributeSet attrs) {
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.SystemKeyboard);
-        if (a.hasValue(R.styleable.SystemKeyboard_keyViewbg)) {
-            keybgDrawable = a.getDrawable(R.styleable.SystemKeyboard_keyViewbg);
+        if (a.hasValue(R.styleable.SystemKeyboard_keyDrawable)) {
+            keyDrawable = a.getDrawable(R.styleable.SystemKeyboard_keyDrawable);
         }
         if (a.hasValue(R.styleable.SystemKeyboard_xmlLayoutResId)) {
             xmlLayoutResId = a.getResourceId(R.styleable.SystemKeyboard_xmlLayoutResId, 0);
             initKeyBoard(context, xmlLayoutResId);
         }
         if (a.hasValue(R.styleable.SystemKeyboard_isRandom)){
-            boolean isRandow = a.getBoolean(R.styleable.SystemKeyboard_isRandom,false);
-            if (isRandow){
-                randomkey();
+            boolean isRandom = a.getBoolean(R.styleable.SystemKeyboard_isRandom,false);
+            if (isRandom){
+                randomKey();
             }
         }
         a.recycle();
@@ -76,8 +76,8 @@ public class SystemKeyboard extends FrameLayout {
         keyboardView.setKeyboard(mKeyboard);
         keyboardView.setEnabled(true);
         keyboardView.setPreviewEnabled(false);
-        if (null != keybgDrawable) {
-            keyboardView.setKeybgDrawable(keybgDrawable);
+        if (null != keyDrawable) {
+            keyboardView.setKeyDrawable(keyDrawable);
         }
         actionListener = new SystemOnKeyboardActionListener();
         keyboardView.setOnKeyboardActionListener(actionListener);
@@ -86,17 +86,17 @@ public class SystemKeyboard extends FrameLayout {
     }
 
 
-    private void randomkey() {
+    private void randomKey() {
         List<Keyboard.Key> keyList = mKeyboard.getKeys();
-        List<Keyboard.Key> newkeyList = new ArrayList<Keyboard.Key>();
+        List<Keyboard.Key> newKeyList = new ArrayList<Keyboard.Key>();
         for (int i = 0, size = keyList.size(); i < size; i++) {
             Keyboard.Key key = keyList.get(i);
             CharSequence label = key.label;
             if (label != null && Util.isNumeric(label.toString())) {
-                newkeyList.add(key);
+                newKeyList.add(key);
             }
         }
-        int count = newkeyList.size();
+        int count = newKeyList.size();
         List<KeyModel> resultList = new ArrayList<KeyModel>();
         LinkedList<KeyModel> temp = new LinkedList<KeyModel>();
         for (int i = 0; i < count; i++) {
@@ -107,14 +107,14 @@ public class SystemKeyboard extends FrameLayout {
         for (int i = 0; i < count; i++) {
             int num = rand.nextInt(count - i);
             KeyModel model = temp.get(num);
-            resultList.add(new KeyModel(model.getCode(), model.getLable()));
+            resultList.add(new KeyModel(model.getCode(), model.getLabel()));
             temp.remove(num);
         }
-        for (int i = 0, size = newkeyList.size(); i < size; i++) {
-            Keyboard.Key newKey = newkeyList.get(i);
-            KeyModel resultmodle = resultList.get(i);
-            newKey.label = resultmodle.getLable();
-            newKey.codes[0] = resultmodle.getCode();
+        for (int i = 0; i < count; i++) {
+            Keyboard.Key newKey = newKeyList.get(i);
+            KeyModel resultModel = resultList.get(i);
+            newKey.label = resultModel.getLabel();
+            newKey.codes[0] = resultModel.getCode();
         }
         keyboardView.setKeyboard(mKeyboard);
     }
@@ -140,11 +140,11 @@ public class SystemKeyboard extends FrameLayout {
 
     /**
      * 设置随机数字键盘
-     * @param isRandomkeys 是否随机,再次设置为false则恢复正常
+     * @param isRandomKeys 是否随机,再次设置为false则恢复正常
      */
-    public void setRandomkeys(boolean isRandomkeys) {
-        if (isRandomkeys){
-            randomkey();
+    public void setRandomKeys(boolean isRandomKeys) {
+        if (isRandomKeys){
+            randomKey();
         }else {
             mKeyboard = new Keyboard(getContext(), xmlLayoutResId);
             keyboardView.setKeyboard(mKeyboard);
@@ -154,12 +154,12 @@ public class SystemKeyboard extends FrameLayout {
 
     /**
      * 设置按压背景，线条粗细等
-     * @param keybgDrawable d
+     * @param keyDrawable d
      */
-    public void setKeybgDrawable(Drawable keybgDrawable) {
-        this.keybgDrawable = keybgDrawable;
+    public void setKeyDrawable(Drawable keyDrawable) {
+        this.keyDrawable = keyDrawable;
         if (null != keyboardView)
-            keyboardView.setKeybgDrawable(keybgDrawable);
+            keyboardView.setKeyDrawable(keyDrawable);
     }
 
 
@@ -180,6 +180,7 @@ public class SystemKeyboard extends FrameLayout {
      * @param isOpenNativeKeyBoard 是否打开原生键盘
      */
     public void setEditText(@NonNull EditText editText, boolean isOpenNativeKeyBoard) {
+        Util.checkNull(actionListener,"Please check if xmlLayoutResId is set");
         actionListener.setEditText(editText);
         if (isOpenNativeKeyBoard) {
             Util.showKeyboard(editText);
@@ -196,15 +197,15 @@ public class SystemKeyboard extends FrameLayout {
      * 设置键盘输入监听
      * @param listener l
      */
-    public void setOnKeyboardActionListener(KeyBoardActionListence listener) {
-        actionListener.setKeyActionListence(listener);
+    public void setOnKeyboardActionListener(KeyBoardActionListener listener) {
+        actionListener.setKeyActionListener(listener);
     }
 
     /**
      * 设置ui监听
      * @param ui u
      */
-    public void setKeyboardUI(IKeyBoardUI ui) {
+    public void setKeyboardUI(IKeyBoardUIChange ui) {
         if (null != ui) {
             keyboardView.setPaint(ui.setPaint(keyboardView.getPaint()));
         }

@@ -29,7 +29,7 @@ public abstract class KeyBoardEditText extends AppCompatEditText {
     private PopupWindow mKeyboardWindow;
     private View mDecorView;
     private View mContentView;
-    private int scrolldis;
+    private int mDifference;
 
 
     public KeyBoardEditText(Context context) {
@@ -66,10 +66,9 @@ public abstract class KeyBoardEditText extends AppCompatEditText {
         mKeyboardWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
             @Override
             public void onDismiss() {
-                // TODO Auto-generated method stub
-                if (scrolldis > 0) {
-                    int temp = scrolldis;
-                    scrolldis = 0;
+                if (mDifference > 0) {
+                    int temp = mDifference;
+                    mDifference = 0;
                     if (null != mContentView) {
                         mContentView.scrollBy(0, -temp);
                     }
@@ -109,9 +108,9 @@ public abstract class KeyBoardEditText extends AppCompatEditText {
                             Rect outRect = new Rect();
                             mDecorView.getWindowVisibleDisplayFrame(outRect);
                             int screen = realHeight;
-                            scrolldis = (int) ((pos[1] + getMeasuredHeight() - outRect.top) - (screen - height));
-                            if (scrolldis > 0) {
-                                mContentView.scrollBy(0, scrolldis);
+                            mDifference = (int) ((pos[1] + getMeasuredHeight() - outRect.top) - (screen - height));
+                            if (mDifference > 0) {
+                                mContentView.scrollBy(0, mDifference);
                             }
                         }
                     });

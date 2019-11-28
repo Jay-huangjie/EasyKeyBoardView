@@ -3,9 +3,6 @@ package com.jay.easykeyboard.util;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Build;
-import android.support.v7.widget.AppCompatEditText;
-import android.support.v7.widget.AppCompatImageView;
-import android.text.InputType;
 import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.View;
@@ -15,8 +12,6 @@ import android.widget.EditText;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * Created by huangjie on 2018/2/3.
@@ -154,5 +149,11 @@ public class Util {
         }
 
         return sbar;
+    }
+
+    public static void checkNull(Object object, String info) {
+        if (object == null) {
+            throw new NullPointerException(info);
+        }
     }
 }

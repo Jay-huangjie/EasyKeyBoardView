@@ -24,7 +24,7 @@ public class MainActivity extends ListActivity {
                 startActivity(SystemKeyboardActivity.class);
                 break;
             case 1:
-                startActivity(SystemKeyboardEidtTextActivity.class);
+                startActivity(SystemKeyboardEditTextActivity.class);
                 break;
         }
     }

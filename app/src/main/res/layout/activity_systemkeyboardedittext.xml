@@ -1,28 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:keyboard="http://schemas.android.com/apk/res-auto"
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="match_parent">
+
     <com.jay.easykeyboard.SystemKeyBoardEditText
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        keyboard:xmlLayoutResId="@xml/keyboard_numbers"
-        keyboard:outSideCancel="true"
         android:id="@+id/skb_top"
-        android:hint="顶部EditText"
-        android:layout_margin="10dp"
-        android:background="@drawable/btn_keyboard_key"
-        />
-    <com.jay.easykeyboard.SystemKeyBoardEditText
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_margin="10dp"
-        android:layout_alignParentBottom="true"
-        android:hint="底部EditText"
+        android:background="@drawable/edit_bg"
+        android:hint="顶部EditText(附加属性：点击外部区域消失)"
+        android:padding="10dp"
+        keyboard:keyDrawable="@drawable/btn_keyboard_key"
+        keyboard:outSideCancel="true"
+        keyboard:xmlLayoutResId="@xml/keyboard_numbers" />
+
+    <com.jay.easykeyboard.SystemKeyBoardEditText
         android:id="@+id/skb_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_margin="10dp"
+        android:background="@drawable/edit_bg"
+        android:hint="底部EditText(附加属性：输入框自动上移,4位空格)"
+        android:padding="10dp"
+        keyboard:keyDrawable="@drawable/btn_keyboard_key"
         keyboard:space="true"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="10dp"
         keyboard:xmlLayoutResId="@xml/keyboard_numbers"
-        android:background="@drawable/btn_keyboard_key"
         />
-</RelativeLayout>
+</FrameLayout>

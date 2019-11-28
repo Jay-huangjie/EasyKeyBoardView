@@ -25,7 +25,7 @@
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/btn_setkeyui"
+            android:id="@+id/btn_change_ui"
             android:text="设置键盘UI"
             android:background="#399cff"
             android:textColor="@color/white"
@@ -48,7 +48,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        keyboard:keyViewbg="@drawable/btn_keyboard_key"
+        keyboard:keyDrawable="@drawable/btn_keyboard_key"
         keyboard:xmlLayoutResId="@xml/keyboard_numbers"
         />
 </RelativeLayout>

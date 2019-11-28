@@ -1,17 +1,12 @@
 package com.example.keybord.keyborddemo;
 
-import android.inputmethodservice.Keyboard;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
-import android.view.View;
-import android.widget.EditText;
-import android.widget.Toast;
 
 import com.jay.easykeyboard.SystemKeyBoardEditText;
-import com.jay.easykeyboard.action.KeyBoardActionListence;
-import com.jay.easykeyboard.impl.SystemOnKeyboardActionListener;
+import com.jay.easykeyboard.action.KeyBoardActionListener;
 
 /**
  * Created by huangjie on 2018/2/6.
@@ -19,7 +14,7 @@ import com.jay.easykeyboard.impl.SystemOnKeyboardActionListener;
  * 说明：附带EditText的popwindow形式弹出的键盘
  */
 
-public class SystemKeyboardEidtTextActivity extends AppCompatActivity implements KeyBoardActionListence {
+public class SystemKeyboardEditTextActivity extends AppCompatActivity implements KeyBoardActionListener {
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {

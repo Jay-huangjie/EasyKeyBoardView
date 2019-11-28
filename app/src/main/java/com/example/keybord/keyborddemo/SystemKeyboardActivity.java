@@ -13,8 +13,8 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.jay.easykeyboard.SystemKeyboard;
-import com.jay.easykeyboard.action.IKeyBoardUI;
-import com.jay.easykeyboard.action.KeyBoardActionListence;
+import com.jay.easykeyboard.action.IKeyBoardUIChange;
+import com.jay.easykeyboard.action.KeyBoardActionListener;
 import com.jay.easykeyboard.util.Util;
 
 /**
@@ -34,11 +34,11 @@ public class SystemKeyboardActivity extends AppCompatActivity implements View.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_systemkeyboard);
         mKeyboard = findViewById(R.id.systemkeyboard);
-        Button btn_setkeyui = findViewById(R.id.btn_setkeyui);
+        Button btnChangeUi = findViewById(R.id.btn_change_ui);
         EditText edit1 = findViewById(R.id.edit);
         EditText edit2 = findViewById(R.id.edit2);
         mKeyboard.setEditText(edit1); //用于绑定EditText,如果切换了EditText，请务必设置此方法
-        mKeyboard.setOnKeyboardActionListener(new KeyBoardActionListence() {
+        mKeyboard.setOnKeyboardActionListener(new KeyBoardActionListener() {
             @Override
             public void onComplete() {
                 showShortToast("完成");
@@ -63,11 +63,11 @@ public class SystemKeyboardActivity extends AppCompatActivity implements View.On
         edit1.setOnFocusChangeListener(this);
         edit2.setOnFocusChangeListener(this);
 
-        btn_setkeyui.setOnClickListener(new View.OnClickListener() {
+        btnChangeUi.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //改变ui
-                mKeyboard.setKeyboardUI(new IKeyBoardUI() {
+                mKeyboard.setKeyboardUI(new IKeyBoardUIChange() {
                     @Override
                     public Paint setPaint(Paint paint) {
                         paint.setColor(Color.BLUE);
@@ -82,7 +82,7 @@ public class SystemKeyboardActivity extends AppCompatActivity implements View.On
             @Override
             public void onClick(View v) {
                 isRandom = !isRandom;
-                mKeyboard.setRandomkeys(isRandom);
+                mKeyboard.setRandomKeys(isRandom);
             }
         });
     }

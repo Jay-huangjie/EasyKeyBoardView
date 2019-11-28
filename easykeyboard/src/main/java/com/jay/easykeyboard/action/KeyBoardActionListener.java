@@ -6,7 +6,7 @@ import android.text.Editable;
  * Created by hj on 2018/12/17.
  * 说明：键盘输入监听
  */
-public interface KeyBoardActionListence {
+public interface KeyBoardActionListener {
     void onComplete(); //完成点击
 
     void onTextChange(Editable editable); //文本改变

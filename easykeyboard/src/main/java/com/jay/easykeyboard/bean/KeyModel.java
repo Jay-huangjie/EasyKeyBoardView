@@ -5,16 +5,16 @@ package com.jay.easykeyboard.bean;
  */
 public class KeyModel {
 
-    public KeyModel(int code,String lable){
+    public KeyModel(int code,String label){
         this.code = code;
-        this.lable = lable;
+        this.label = label;
     }
 
-    private String lable;
+    private String label;
     private int code;
 
-    public String getLable() {
-        return lable;
+    public String getLabel() {
+        return label;
     }
 
     public int getCode() {

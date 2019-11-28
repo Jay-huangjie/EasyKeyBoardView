@@ -24,7 +24,6 @@ public class FormatTextWatcher implements TextWatcher {
     private String tag = " ";
     private int beforeTextLength = 0;
     private int afterTextLength = 0;
-    private int location = 0;//记录光标的位置
     private boolean isChanging = false;// 是否更换中
 
     @Override
@@ -39,6 +38,7 @@ public class FormatTextWatcher implements TextWatcher {
 
     @Override
     public void afterTextChanged(Editable s) {
+        int location;
         afterTextLength = s.length();
         if (isChanging)
             return;

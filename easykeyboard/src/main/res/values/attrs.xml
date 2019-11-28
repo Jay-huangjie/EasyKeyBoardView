@@ -2,15 +2,15 @@
 <resources>
     <attr name="xmlLayoutResId" format="reference"/>
     <attr name="isRandom" format="boolean"/>
-    <attr name="keyViewbg" format="reference"/>
+    <attr name="keyDrawable" format="reference"/>
     <declare-styleable name="SystemKeyboard">
         <attr name="xmlLayoutResId"/>
-        <attr name="keyViewbg"/>
+        <attr name="keyDrawable"/>
         <attr name="isRandom"/>
     </declare-styleable>
     <declare-styleable name="SystemKeyBoardEditText">
         <attr name="xmlLayoutResId"/>
-        <attr name="keyViewbg"/>
+        <attr name="keyDrawable"/>
         <attr name="outSideCancel" format="boolean"/>
         <attr name="space" format="boolean"/>
         <attr name="isRandom"/>

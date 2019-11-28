@@ -3,13 +3,10 @@ package com.jay.easykeyboard.impl;
 import android.inputmethodservice.Keyboard;
 import android.inputmethodservice.KeyboardView;
 import android.text.Editable;
-import android.util.Log;
 import android.widget.EditText;
 import android.widget.PopupWindow;
 
-import com.jay.easykeyboard.action.KeyBoardActionListence;
-
-import static android.inputmethodservice.Keyboard.KEYCODE_DONE;
+import com.jay.easykeyboard.action.KeyBoardActionListener;
 
 /**
  * Created by huangjie on 2018/2/3.
@@ -21,7 +18,7 @@ public class SystemOnKeyboardActionListener implements KeyboardView.OnKeyboardAc
 
     private EditText editText;
     private PopupWindow popupWindow;
-    private KeyBoardActionListence listence;
+    private KeyBoardActionListener mActionListener;
 
     public void setEditText(EditText editText) {
         this.editText = editText;
@@ -31,8 +28,8 @@ public class SystemOnKeyboardActionListener implements KeyboardView.OnKeyboardAc
         this.popupWindow = popupWindow;
     }
 
-    public void setKeyActionListence(KeyBoardActionListence listence){
-        this.listence = listence;
+    public void setKeyActionListener(KeyBoardActionListener listener){
+        this.mActionListener = listener;
     }
 
     @Override
@@ -52,20 +49,20 @@ public class SystemOnKeyboardActionListener implements KeyboardView.OnKeyboardAc
                 if (null != popupWindow && popupWindow.isShowing()) {
                     popupWindow.dismiss();
                 }
-                listence.onComplete();
+                mActionListener.onComplete();
             } else if (primaryCode == Keyboard.KEYCODE_DELETE) {// 回退
                 if (editable != null && editable.length() > 0) {
                     if (start > 0) {
                         editable.delete(start - 1, start);
                     }
                 }
-                listence.onClear();
+                mActionListener.onClear();
             } else if (primaryCode == 152) {
                 editable.clear();
-                listence.onClearAll();
+                mActionListener.onClearAll();
             }else {
                 editable.insert(start, Character.toString((char) primaryCode));
-                listence.onTextChange(editable);
+                mActionListener.onTextChange(editable);
             }
         }
     }

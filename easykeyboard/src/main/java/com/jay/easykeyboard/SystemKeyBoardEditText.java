@@ -6,16 +6,17 @@ import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.util.AttributeSet;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
 
-import com.jay.easykeyboard.action.KeyBoardActionListence;
-import com.jay.easykeyboard.action.OnEditFocusChangeListence;
-import com.jay.easykeyboard.widget.KeyBoardEditText;
-import com.jay.easykeyboard.util.Util;
+import com.jay.easykeyboard.action.KeyBoardActionListener;
+import com.jay.easykeyboard.action.OnEditFocusChangeListener;
 import com.jay.easykeyboard.impl.FormatTextWatcher;
 import com.jay.easykeyboard.impl.SystemOnKeyboardActionListener;
+import com.jay.easykeyboard.util.Util;
+import com.jay.easykeyboard.widget.KeyBoardEditText;
 
 /**
  * Created by huangjie on 2018/2/4.
@@ -25,13 +26,13 @@ import com.jay.easykeyboard.impl.SystemOnKeyboardActionListener;
 
 public class SystemKeyBoardEditText extends KeyBoardEditText {
     private boolean enable = true;    //是否启用自定义键盘
-    private boolean focuable = true; //默认获取焦点
-    private boolean outSideable = false; //点击外部区域是否隐藏键盘
-    private SystemKeyboard systemKeyboard;
-    private FormatTextWatcher textWatcher;
-    private SystemOnKeyboardActionListener listener;
-    private OnEditFocusChangeListence focusChangeListence;
-    private int FOCUSTAB;
+    private boolean focusEnable = true; //默认获取焦点
+    private boolean outSideEnable = false; //点击外部区域是否隐藏键盘
+    private SystemKeyboard mSystemKeyboard;
+    private FormatTextWatcher mTextWatcher;
+    private SystemOnKeyboardActionListener mActionListener;
+    private OnEditFocusChangeListener mFocusChangeListener;
+    private int focusMark;
 
     private static final int READY = 0X110;
     private static final int STAR = 0X111;
@@ -49,17 +50,17 @@ public class SystemKeyBoardEditText extends KeyBoardEditText {
     public SystemKeyBoardEditText(final Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init(context, attrs);
-        initListence();
+        initListener();
     }
 
-    private void initListence() {
+    private void initListener() {
         setOnTouchListener(new OnTouchListener() {
             @SuppressLint("ClickableViewAccessibility")
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if (!isShowing()) {
                     if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                        if (focuable) {
+                        if (focusEnable) {
                             requestFocus();
                             requestFocusFromTouch();
                             if (enable) {
@@ -83,24 +84,24 @@ public class SystemKeyBoardEditText extends KeyBoardEditText {
             @Override
             public void onFocusChange(View v, final boolean hasFocus) {
                 //根据焦点变化判断外部点击区域
-                FOCUSTAB++;
+                focusMark++;
                 if (STATUE == READY) {
                     mHandler.postDelayed(new Runnable() {
                         @Override
                         public void run() {
                             if (STATUE == STAR) {
-                                if (FOCUSTAB == 1 && !hasFocus && outSideable) {
+                                if (focusMark == 1 && !hasFocus && outSideEnable) {
                                     dismissKeyboardWindow();
                                 }
                                 STATUE = READY;
-                                FOCUSTAB = 0;
+                                focusMark = 0;
                             }
                         }
                     }, 200);
                     STATUE = STAR;
                 }
-                if (focusChangeListence != null) {
-                    focusChangeListence.OnFocusChangeListener(v, hasFocus);
+                if (mFocusChangeListener != null) {
+                    mFocusChangeListener.OnFocusChangeListener(v, hasFocus);
                 }
             }
         });
@@ -108,27 +109,27 @@ public class SystemKeyBoardEditText extends KeyBoardEditText {
 
     private void init(Context context, AttributeSet attrs) {
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.SystemKeyBoardEditText);
-        boolean randomkeys = a.getBoolean(R.styleable.SystemKeyboard_isRandom, false);
+        outSideEnable = a.getBoolean(R.styleable.SystemKeyBoardEditText_outSideCancel, false);
         int xmlLayoutResId = a.getResourceId(R.styleable.SystemKeyBoardEditText_xmlLayoutResId, 0);
+        mSystemKeyboard = new SystemKeyboard(context);
+        mSystemKeyboard.setXmlLayoutResId(xmlLayoutResId);
+        if (a.hasValue(R.styleable.SystemKeyBoardEditText_keyDrawable)) {
+            Drawable keyDrawable = a.getDrawable(R.styleable.SystemKeyBoardEditText_keyDrawable);
+            mSystemKeyboard.setKeyDrawable(keyDrawable);
+        }
+        initPopWindow(mSystemKeyboard);
+        mActionListener = new SystemOnKeyboardActionListener();
+        mActionListener.setEditText(this);
+        mActionListener.setPopupWindow(getKeyboardWindow());
+        mSystemKeyboard.getKeyboardView().setOnKeyboardActionListener(mActionListener);
         boolean isSpace = a.getBoolean(R.styleable.SystemKeyBoardEditText_space, false);
-        outSideable = a.getBoolean(R.styleable.SystemKeyBoardEditText_outSideCancel, false);
-        systemKeyboard = new SystemKeyboard(context);
-        systemKeyboard.setXmlLayoutResId(xmlLayoutResId);
-        if (a.hasValue(R.styleable.SystemKeyBoardEditText_keyViewbg)) {
-            Drawable keyViewbg = a.getDrawable(R.styleable.SystemKeyBoardEditText_keyViewbg);
-            systemKeyboard.setKeybgDrawable(keyViewbg);
-        }
-        initPopWindow(systemKeyboard);
-        listener = new SystemOnKeyboardActionListener();
-        listener.setEditText(this);
-        listener.setPopupWindow(getKeyboardWindow());
-        systemKeyboard.getKeyboardView().setOnKeyboardActionListener(listener);
         if (isSpace) {
-            textWatcher = new FormatTextWatcher(this);
-            addTextChangedListener(textWatcher);
+            mTextWatcher = new FormatTextWatcher(this);
+            addTextChangedListener(mTextWatcher);
         }
-        if (randomkeys) {
-            systemKeyboard.setRandomkeys(true);
+        boolean randomKeys = a.getBoolean(R.styleable.SystemKeyboard_isRandom, false);
+        if (randomKeys) {
+            mSystemKeyboard.setRandomKeys(true);
         }
         setCursorVisible(true);
         a.recycle();
@@ -136,7 +137,7 @@ public class SystemKeyBoardEditText extends KeyBoardEditText {
 
 
     public SystemKeyboard getSystemKeyboard() {
-        return systemKeyboard;
+        return mSystemKeyboard;
     }
 
     /**
@@ -146,47 +147,59 @@ public class SystemKeyBoardEditText extends KeyBoardEditText {
      */
     public void setSpaceEnable(boolean isSpace) {
         if (isSpace) {
-            if (textWatcher == null) {
-                textWatcher = new FormatTextWatcher(this);
+            if (mTextWatcher == null) {
+                mTextWatcher = new FormatTextWatcher(this);
             }
-            addTextChangedListener(textWatcher);
+            addTextChangedListener(mTextWatcher);
         } else {
-            if (null != textWatcher) {
-                removeTextChangedListener(textWatcher);
+            if (null != mTextWatcher) {
+                removeTextChangedListener(mTextWatcher);
             }
         }
     }
 
+    /**
+     * 重写onKeyDown 当键盘弹出按回退键关闭
+     */
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (event.getKeyCode() == KeyEvent.KEYCODE_BACK
+                && getKeyboardWindow().isShowing()) {
+            dismissKeyboardWindow();
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
 
     /**
      * 设置键盘输入监听
      *
      * @param listener listence
      */
-    public void setOnKeyboardActionListener(KeyBoardActionListence listener) {
-        this.listener.setKeyActionListence(listener);
+    public void setOnKeyboardActionListener(KeyBoardActionListener listener) {
+        this.mActionListener.setKeyActionListener(listener);
     }
 
     /**
      * 设置焦点
      *
-     * @param focuable focuable
+     * @param focusEnable focuable
      */
-    public void setFocuable(boolean focuable) {
-        this.focuable = focuable;
-        setFocusable(focuable);
-        setFocusableInTouchMode(focuable);
-        setCursorVisible(focuable);
+    public void setFocusEnable(boolean focusEnable) {
+        this.focusEnable = focusEnable;
+        setFocusable(focusEnable);
+        setFocusableInTouchMode(focusEnable);
+        setCursorVisible(focusEnable);
     }
 
 
     /**
      * 焦点监听
      *
-     * @param focusChangeListence listence
+     * @param focusChangeListener listence
      */
-    public void setFocusChangeListence(OnEditFocusChangeListence focusChangeListence) {
-        this.focusChangeListence = focusChangeListence;
+    public void setFocusChangeListener(OnEditFocusChangeListener focusChangeListener) {
+        this.mFocusChangeListener = focusChangeListener;
     }
 
     /**
@@ -194,12 +207,12 @@ public class SystemKeyBoardEditText extends KeyBoardEditText {
      *
      * @param drawable drawable
      */
-    public void setKeyViewBgDrawable(Drawable drawable) {
-        if (systemKeyboard != null) systemKeyboard.setKeybgDrawable(drawable);
+    public void setKeyViewDrawable(Drawable drawable) {
+        if (mSystemKeyboard != null) mSystemKeyboard.setKeyDrawable(drawable);
     }
 
-    public void setRandomkeys(boolean isRandomkeys) {
-        if (systemKeyboard != null) systemKeyboard.setRandomkeys(isRandomkeys);
+    public void setRandomKeys(boolean isRandomKeys) {
+        if (mSystemKeyboard != null) mSystemKeyboard.setRandomKeys(isRandomKeys);
     }
 
     /**
@@ -208,9 +221,9 @@ public class SystemKeyBoardEditText extends KeyBoardEditText {
      * @param editText editText
      */
     public void setEditText(EditText editText) {
-        listener.setEditText(editText);
+        mActionListener.setEditText(editText);
         if (editText instanceof SystemKeyBoardEditText) {
-            listener.setPopupWindow(((SystemKeyBoardEditText) editText).getKeyboardWindow());
+            mActionListener.setPopupWindow(((SystemKeyBoardEditText) editText).getKeyboardWindow());
         }
     }
 
