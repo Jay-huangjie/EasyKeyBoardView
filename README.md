@@ -15,7 +15,7 @@ EasyKeyBoardView旨在帮助开发者快速实现一个自定义键盘，无需�
 ![图一](https://upload-images.jianshu.io/upload_images/3468978-383182c3fd48d1fd.gif?imageMogr2/auto-orient/strip/2/2/720)
 
 图二：
-![图二](https://raw.githubusercontent.com/Jay-huangjie/EasyKeyBoardView/master/img/Screenshot_2017-03-20-00-15-41.png)
+![图二](https://upload-images.jianshu.io/upload_images/3468978-4c550ce01711d0de.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/720)
 
 ### 使用
 第一步：
