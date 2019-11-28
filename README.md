@@ -1,3 +1,4 @@
+![Release](https://jitpack.io/v/Jay-huangjie/EasyKeyBoardView.svg?style=flat-square)
 ## EasyKeyBoardView
 EasyKeyBoardView旨在帮助开发者快速实现一个自定义键盘，无需实现键盘内部的输入逻辑，只需关注键盘的
 布局和输入后的功能实现即可
