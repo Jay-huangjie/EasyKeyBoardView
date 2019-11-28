@@ -11,9 +11,10 @@ EasyKeyBoardView旨在帮助开发者快速实现一个自定义键盘，无需�
 
 ### 效果图
 图一:
-![图一](http://p2p0lrpx1.bkt.clouddn.com/k1.gif-gif)
+![图一](https://upload-images.jianshu.io/upload_images/3468978-383182c3fd48d1fd.gif?imageMogr2/auto-orient/strip/2/2/720)
+
 图二：
-![图二](http://p2p0lrpx1.bkt.clouddn.com/k2.gif-gif)
+![图二](https://raw.githubusercontent.com/Jay-huangjie/EasyKeyBoardView/master/img/Screenshot_2017-03-20-00-15-41.png)
 
 ### 使用
 第一步：
@@ -53,7 +54,7 @@ xml属性:
 
 |属性|作用|
 |----|----|
-|keyViewbg|用于设置键盘的按压效果和按钮之间线的粗细颜色等
+|keyDrawable|用于设置键盘的按压效果和按钮之间线的粗细颜色等
 |xmlLayoutResId| 设置键盘的布局文件，必须设置
 |isRandom|是否数字随机
 
@@ -63,11 +64,11 @@ java属性：
 
 `setKeyboardUI`可用来定义键盘上字体的UI，如颜色，大小
 
-`setKeybgDrawable` 设置按压效果文件
+`setKeyDrawable` 设置按压效果文件
 
 `setOnKeyboardActionListener` 键盘输入监听
 
-`setRandomkeys` 设置键盘数字随机，如果已随机数字，设置为false即可另数字恢复正常
+`setRandomKeys` 设置键盘数字随机，如果已随机数字，设置为false即可另数字恢复正常
 
 如果需要实现焦点监听，需要实现`setFocusChangeListence`接口，注意是项目方法不是原生Api方法噢。
 
@@ -84,7 +85,7 @@ xml属性：
 
 |属性|作用|
 |----|----|
-|keyViewbg|用于设置键盘的按压效果和按钮之间线的粗细颜色等
+|keyDrawable|用于设置键盘的按压效果和按钮之间线的粗细颜色等
 |xmlLayoutResId| 设置键盘的布局文件，必须设置
 |isRandom|是否数字随机
 |space|开启4位空格功能,使用场景是输入身份证或银行卡号的时候。
@@ -112,12 +113,15 @@ xml属性：
 
 2018/12/18
 加入随机键盘功能
+
+2019/11/28
+规范命名
+优化：当键盘弹出时点击回退按钮关闭键盘,而不是Activity
 ```
 
 ### 后续优化
 * ~~加入随机键盘功能~~
 * ~~解决在RecyclerView中的回收问题~~
-* 优化KeyBoardView的模式，期望增加唯一键盘模式(待设计ing)
 
 如果有别的未覆盖到的功能希望能在issuse中反馈，个人能想到的场景有限，希望各位大佬集思广益
 
