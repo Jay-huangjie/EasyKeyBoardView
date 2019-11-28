@@ -1,4 +1,4 @@
-![Release](https://jitpack.io/v/Jay-huangjie/EasyKeyBoardView.svg?style=flat-square)
+![tag](https://jitpack.io/v/Jay-huangjie/EasyKeyBoardView.svg?style=flat-square)
 ## EasyKeyBoardView
 EasyKeyBoardView旨在帮助开发者快速实现一个自定义键盘，无需实现键盘内部的输入逻辑，只需关注键盘的
 布局和输入后的功能实现即可
@@ -116,7 +116,7 @@ xml属性：
 2018/12/18
 加入随机键盘功能
 
-2019/11/28
+2019/11/28 v1.6
 规范命名
 优化：当键盘弹出时点击回退按钮关闭键盘,而不是Activity
 ```
