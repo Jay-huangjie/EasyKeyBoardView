@@ -35,7 +35,7 @@ EasyKeyBoardView旨在帮助开发者快速实现一个自定义键盘，无需�
 	        implementation 'com.github.Jay-huangjie:EasyKeyBoardView:tag'
 	}
 ```
-最新版本见最上面的版本号标识
+最新版本见最上面的版本号标识,注意要加v字符哦，例如：`implementation 'com.github.Jay-huangjie:EasyKeyBoardView:v1.6'`
 
 第二步：
 #### 实现固定在底部的键盘
@@ -95,7 +95,7 @@ xml属性：
 
 其他用法与`SystemKeyboard`一样，`SystemKeyBoardEditText`实际是`SystemKeyboard`的进一步封装，通过`EditText`与`PopupWindow`结合的方法来实现键盘的灵活弹出.
 
-可以通过`getSystemKeyboard`方法来获取到`SystemKeyBoard`对象。
+可以通过`getSystemKeyboard`方法来获取到`SystemKeyBoard`对象。调用`getKeyboardWindow`可以获取包裹键盘View的popwindow对象，随后再调用`dismiss()`方法即可将键盘关闭
 
 启用`removeCopyAndPaste`方法可以屏蔽EditText的长按复制粘贴功能
 
