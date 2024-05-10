@@ -1,9 +1,10 @@
 package com.example.keybord.keyborddemo;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.jay.easykeyboard.SystemKeyBoardEditText;
 import com.jay.easykeyboard.action.KeyBoardActionListener;

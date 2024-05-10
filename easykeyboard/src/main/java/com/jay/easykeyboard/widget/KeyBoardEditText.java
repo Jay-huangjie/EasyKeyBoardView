@@ -3,7 +3,6 @@ package com.jay.easykeyboard.widget;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Rect;
-import android.support.v7.widget.AppCompatEditText;
 import android.util.AttributeSet;
 import android.view.ActionMode;
 import android.view.Gravity;
@@ -15,6 +14,8 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.widget.PopupWindow;
+
+import androidx.appcompat.widget.AppCompatEditText;
 
 import com.jay.easykeyboard.R;
 import com.jay.easykeyboard.util.Util;
